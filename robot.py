@@ -1,3 +1,5 @@
+# test.py와 한 가지만 다름
+
 import sys
 sys.path.append('pingpong')
 from pingpong.pingpongthread import PingPongThread
@@ -88,8 +90,10 @@ while cap.isOpened():
             if action_seq[-1] == action_seq[-2] == action_seq[-3]:
                 this_action = action
 
+                #로봇 제어
                 if last_action != this_action:
-                    if this_action == 'come':
+                    if this_action == 'come': 
+                        #로봇이 가까이 오도록
                         PingPongThreadInstance.run_motor(1, 5)
                         PingPongThreadInstance.run_motor(2, -5)
                     elif this_action == 'away':

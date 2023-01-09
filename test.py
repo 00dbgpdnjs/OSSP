@@ -67,11 +67,15 @@ while cap.isOpened():
 
             input_data = np.expand_dims(np.array(seq[-seq_length:], dtype=np.float32), axis=0)
 
+            #추론 결과
             y_pred = model.predict(input_data).squeeze()
 
+            #어떤 인덱스인지
             i_pred = int(np.argmax(y_pred))
+            #confidence 뽑아내기
             conf = y_pred[i_pred]
-
+            
+            #confidence가 90% 이하면 없애버림 ;제스처를 취하지 않았다고 판단
             if conf < 0.9:
                 continue
 
@@ -81,6 +85,7 @@ while cap.isOpened():
             if len(action_seq) < 3:
                 continue
 
+            # 액션 판단 로직 : 마지막 3개의 액션이 모두 같은 액션일 때 ex. 마지막 3개가 전부 come일 때
             this_action = '?'
             if action_seq[-1] == action_seq[-2] == action_seq[-3]:
                 this_action = action
