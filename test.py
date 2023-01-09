@@ -3,6 +3,30 @@ import mediapipe as mp
 import numpy as np
 from tensorflow.keras.models import load_model
 
+import sys
+import pyautogui
+import pyperclip
+import time
+
+def find_target(img_file, timeout=5):
+    start = time.time()
+    target = None
+    while target is None:
+        target = pyautogui.locateOnScreen(img_file, grayscale=True, confidence=0.9)
+        end = time.time()
+        if end - start > timeout:
+            break # Return "target" to None
+    return target
+
+def my_click(img_file, timeout=5):
+    target = find_target(img_file, timeout)
+    if target:
+        pyautogui.click(target)
+    else:
+        print(f"[Timeout {timeout}s] Target not found ({img_file}). Terminate program.")
+        sys.exit()
+
+
 actions = ['come', 'away', 'spin']
 seq_length = 30
 
@@ -26,6 +50,7 @@ cap = cv2.VideoCapture(0)
 
 seq = []
 action_seq = []
+last_action = None
 
 while cap.isOpened():
     ret, img = cap.read()
@@ -89,6 +114,15 @@ while cap.isOpened():
             this_action = '?'
             if action_seq[-1] == action_seq[-2] == action_seq[-3]:
                 this_action = action
+            
+            if last_action != this_action:
+                if this_action == 'come': 
+                    my_click("skip_ad.jpg")
+                # elif this_action == 'away':
+                    
+                # elif this_action == 'spin':
+                    
+                last_action = this_action
 
             cv2.putText(img, f'{this_action.upper()}', org=(int(res.landmark[0].x * img.shape[1]), int(res.landmark[0].y * img.shape[0] + 20)), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1, color=(255, 255, 255), thickness=2)
 
