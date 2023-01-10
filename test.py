@@ -24,7 +24,7 @@ def my_click(img_file, timeout=5):
         pyautogui.click(target)
     else:
         print(f"[Timeout {timeout}s] Target not found ({img_file}). Terminate program.")
-        sys.exit()
+        #sys.exit()
 
 
 actions = ['come', 'away', 'spin']
@@ -117,10 +117,13 @@ while cap.isOpened():
             
             if last_action != this_action:
                 if this_action == 'come': 
-                    my_click("skip_ad.jpg")
-                # elif this_action == 'away':
-                    
-                # elif this_action == 'spin':
+                    #my_click("skip_ad.jpg")
+                    target=pyautogui.locateOnScreen("skip_ad.jpg", grayscale=True, confidence=0.9)
+                    pyautogui.click(target)
+                elif this_action == 'away':
+                    pyautogui.scroll(-400)    
+                elif this_action == 'spin':
+                    pyautogui.hotkey('alt', 'left')
                     
                 last_action = this_action
 
