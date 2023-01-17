@@ -26,6 +26,14 @@ def my_click(img_file, timeout=5):
         print(f"[Timeout {timeout}s] Target not found ({img_file}). Terminate program.")
         #sys.exit()
 
+def clickVideo(num):
+	for i in pyautogui.locateAllOnScreen("img/hits.jpg"):
+		# print(i)
+		if i == num :
+			pyautogui.click(i, duration=0.5)
+
+      
+
 
 actions = ['come', 'away', 'spin']
 seq_length = 30
@@ -60,6 +68,12 @@ while cap.isOpened():
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     result = hands.process(img)
     img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+
+    target=pyautogui.locateOnScreen("img/skip_ad.jpg", grayscale=True, confidence=0.9)
+    if target :
+        print("img/skip_ad.jpg")
+        pyautogui.click(target)
+        pyautogui.moveTo(target)
 
     if result.multi_hand_landmarks is not None:
         for res in result.multi_hand_landmarks:
@@ -117,13 +131,47 @@ while cap.isOpened():
             
             if last_action != this_action:
                 if this_action == 'come': 
+                    
                     #my_click("skip_ad.jpg")
-                    target=pyautogui.locateOnScreen("skip_ad.jpg", grayscale=True, confidence=0.9)
-                    pyautogui.click(target)
+                    # clickVideo(1)
+
+                    # for i in pyautogui.locateAllOnScreen("img/hits.jpg"):
+                    #     # print(i)
+                    #     if i == 1 :
+                    #         pyautogui.moveTo(i, duration=0.5)
+                    #         pyautogui.move(0, -15)			
+                    #         pyautogui.click(duration=0.5)
+
+                    target=pyautogui.locateOnScreen("img/hits.jpg", grayscale=True, confidence=0.8)
+                    if target :
+                        pyautogui.moveTo(target, duration=0.5)
+                        pyautogui.move(0, -15, duration=0.5)			
+                        pyautogui.click(duration=0.5)
+                    
                 elif this_action == 'away':
-                    pyautogui.scroll(-400)    
+                    target=pyautogui.locateOnScreen("img/microphone.jpg", grayscale=True, confidence=0.8)                
+                    if target :
+                        print("microphone.jpg")
+                        pyautogui.click(target, duration=0.5)
+                        pyautogui.moveTo(target, duration=0.5)
+                        pyautogui.sleep(1)
+
+                    # pyautogui.scroll(-400) 
                 elif this_action == 'spin':
-                    pyautogui.hotkey('alt', 'left')
+                    pyautogui.moveTo(700,300, duration=0.25)
+                    target = pyautogui.locateOnScreen("img/volume.jpg")
+                    pyautogui.moveTo(target, duration=0.5)
+                    pyautogui.hotkey('up')
+
+                    # target=pyautogui.locateOnScreen('img/youtubeMark.jpg', confidence=0.7)    
+                    # if target :
+                    #     print("youtubeMark.jpg")
+                    #     pyautogui.click(target, duration=0.5)
+                    #     pyautogui.moveTo(target, duration=0.5)
+
+                    # pyautogui.hotkey('alt', 'left')
+                    # pyautogui.hotkey('k')
+                    # pyautogui.hotkey('f')
                     
                 last_action = this_action
 

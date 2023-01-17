@@ -4,7 +4,8 @@ import numpy as np
 import time, os
 
 # 학습 시킬 액션들 / 0 1 2 로 매칭시킬 것임
-actions = ['come', 'away', 'spin']
+#actions = ['come', 'away', 'spin']
+actions = ['skip', 'scroll', 'back', 'search', 'home', 'space', 'up', 'down', 'next', 'max']
 seq_length = 30
 secs_for_action = 30 # 액션 녹화 시간 각 30초 ;늘리면 학습 더 잘됨
 
