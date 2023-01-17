@@ -35,7 +35,7 @@ def clickVideo(num):
       
 
 
-actions = ['come', 'away', 'spin']
+actions = ['skip', 'scroll', 'back', 'search', 'home', 'space', 'up', 'down', 'next', 'max']
 seq_length = 30
 
 model = load_model('models/model2_1.0.h5')
@@ -130,48 +130,53 @@ while cap.isOpened():
                 this_action = action
             
             if last_action != this_action:
-                if this_action == 'come': 
-                    
+                if this_action == 'skip': 
                     #my_click("skip_ad.jpg")
-                    # clickVideo(1)
-
-                    # for i in pyautogui.locateAllOnScreen("img/hits.jpg"):
-                    #     # print(i)
-                    #     if i == 1 :
-                    #         pyautogui.moveTo(i, duration=0.5)
-                    #         pyautogui.move(0, -15)			
-                    #         pyautogui.click(duration=0.5)
-
-                    target=pyautogui.locateOnScreen("img/hits.jpg", grayscale=True, confidence=0.8)
-                    if target :
-                        pyautogui.moveTo(target, duration=0.5)
-                        pyautogui.move(0, -15, duration=0.5)			
-                        pyautogui.click(duration=0.5)
+                    target = pyautogui.locateOnScreen("img/skip_ad.jpg", grayscale=True, confidence=0.9)
+                    if target:
+                        pyautogui.click(target)
+                        print("skip ad")
                     
-                elif this_action == 'away':
+                elif this_action == 'scroll':   
+                    pyautogui.scroll(-400) 
+
+                elif this_action == 'back':
+                    pyautogui.hotkey('alt', 'left')
+                
+                elif this_action == 'search':
                     target=pyautogui.locateOnScreen("img/microphone.jpg", grayscale=True, confidence=0.8)                
                     if target :
                         print("microphone.jpg")
                         pyautogui.click(target, duration=0.5)
                         pyautogui.moveTo(target, duration=0.5)
                         pyautogui.sleep(1)
+                elif this_action == 'home':
+                    target=pyautogui.locateOnScreen('img/youtubeMark.jpg', confidence=0.7)    
+                    if target :
+                        print("youtubeMark.jpg")
+                        pyautogui.click(target, duration=0.5)
+                        pyautogui.moveTo(target, duration=0.5)
 
-                    # pyautogui.scroll(-400) 
-                elif this_action == 'spin':
+                elif this_action == 'space':
+                    pyautogui.hotkey('k')
+
+                elif this_action == 'up':
                     pyautogui.moveTo(700,300, duration=0.25)
                     target = pyautogui.locateOnScreen("img/volume.jpg")
                     pyautogui.moveTo(target, duration=0.5)
                     pyautogui.hotkey('up')
+                    
+                elif this_action == 'down':
+                    pyautogui.moveTo(700,300, duration=0.25)
+                    target = pyautogui.locateOnScreen("img/volume.jpg")
+                    pyautogui.moveTo(target, duration=0.5)
+                    pyautogui.hotkey('down')
 
-                    # target=pyautogui.locateOnScreen('img/youtubeMark.jpg', confidence=0.7)    
-                    # if target :
-                    #     print("youtubeMark.jpg")
-                    #     pyautogui.click(target, duration=0.5)
-                    #     pyautogui.moveTo(target, duration=0.5)
+                elif this_action == 'next':
+                    pyautogui.hotkey('shift', 'n')
 
-                    # pyautogui.hotkey('alt', 'left')
-                    # pyautogui.hotkey('k')
-                    # pyautogui.hotkey('f')
+                elif this_action == 'max':
+                    pyautogui.hotkey('f')
                     
                 last_action = this_action
 
