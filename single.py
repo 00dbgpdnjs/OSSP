@@ -99,17 +99,18 @@ while cap.isOpened():
                         print("skip ad")
 
                 elif idx == 1:
-                    pyautogui.scroll(-400) 
+                    pyautogui.scroll(-100) 
                     
                 elif idx == 10:
                         pyautogui.hotkey('alt', 'left')
+                        pyautogui.sleep(1)
                     
                 elif idx == 3:
                     target=pyautogui.locateOnScreen("img/microphone.jpg", grayscale=True, confidence=0.8)                
                     if target :
                         print("microphone.jpg")
                         pyautogui.click(target, duration=0.5)
-                        pyautogui.moveTo(target, duration=0.5)
+                        # pyautogui.moveTo(target, duration=0.5)
                         pyautogui.sleep(1)
                     
                 elif idx == 4:
@@ -117,10 +118,11 @@ while cap.isOpened():
                     if target :
                         print("youtubeMark.jpg")
                         pyautogui.click(target, duration=0.5)
-                        pyautogui.moveTo(target, duration=0.5)
+                        # pyautogui.moveTo(target, duration=0.5)
                     
                 elif idx == 5:
                     pyautogui.hotkey('k')
+                    pyautogui.sleep(1)
                     
                 elif idx == 6:
                     pyautogui.moveTo(700,300, duration=0.25)
@@ -136,9 +138,11 @@ while cap.isOpened():
                     
                 elif idx == 8:
                     pyautogui.hotkey('shift', 'n')
+                    pyautogui.sleep(1.2)
                     
                 elif idx == 9:
                     pyautogui.hotkey('f')
+                    pyautogui.sleep(1)
                 # pyautogui.sleep(2)
                 last_action = this_action
                     
