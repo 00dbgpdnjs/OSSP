@@ -1,4 +1,5 @@
 # test.py와 한 가지만 다름
+# 핑퐁 로봇 움직이기
 
 import sys
 sys.path.append('pingpong')

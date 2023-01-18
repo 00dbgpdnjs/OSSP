@@ -1,4 +1,4 @@
-import cv2
+import cv2 # openCV
 import mediapipe as mp
 import numpy as np
 import time, os
@@ -6,7 +6,7 @@ import time, os
 # 학습 시킬 액션들 / 0 1 2 로 매칭시킬 것임
 # actions = ['come', 'away', 'spin']
 actions = ['skip', 'scroll', 'back', 'search', 'home']
-seq_length = 30
+seq_length = 30 #LSTM에 넣을 각각의 데이터의 윈도우 사이즈
 secs_for_action = 30 # 액션 녹화 시간 각 30초 ;늘리면 학습 더 잘됨
 
 # MediaPipe hands model
@@ -18,11 +18,13 @@ hands = mp_hands.Hands(
     min_detection_confidence=0.5,
     min_tracking_confidence=0.5)
 
+#웹캠
 cap = cv2.VideoCapture(0)
 
 created_time = int(time.time())
 os.makedirs('dataset', exist_ok=True) # 데이터셋 저장할 폴더 생성
 
+#웹캠을 열어서 제스쳐 마다 녹화
 while cap.isOpened():
     for idx, action in enumerate(actions):
         data = []
@@ -40,7 +42,7 @@ while cap.isOpened():
 
         #30초 동안 반복
         while time.time() - start_time < secs_for_action:
-            ret, img = cap.read() # 프레임 하나 읽기
+            ret, img = cap.read() # 프레임 하나씩 읽기
 
             img = cv2.flip(img, 1)
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -50,6 +52,7 @@ while cap.isOpened():
             if result.multi_hand_landmarks is not None:
                 for res in result.multi_hand_landmarks:
                     joint = np.zeros((21, 4))
+                    #결과의 각도를 뽑아냄
                     for j, lm in enumerate(res.landmark):
                         #x, y, z 좌표만 이용하지 않고 visibility도 추가
                         joint[j] = [lm.x, lm.y, lm.z, lm.visibility]
@@ -67,6 +70,7 @@ while cap.isOpened():
                         v[[1,2,3,5,6,7,9,10,11,13,14,15,17,18,19],:])) # [15,]
 
                     angle = np.degrees(angle) # Convert radian to degree
+                    #여기까지 각도 구하기
 
                     angle_label = np.array([angle], dtype=np.float32)
                     # 라벨 넣어주기. ex) 컴은 idx가 0

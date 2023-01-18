@@ -35,7 +35,7 @@ def clickVideo(num):
       
 
 
-actions = ['skip', 'scroll', 'back', 'search', 'home', 'space', 'up', 'down', 'next', 'max']
+actions = ['come', 'away', 'spin']
 seq_length = 30
 
 model = load_model('models/model2_1.0.h5')
@@ -95,6 +95,7 @@ while cap.isOpened():
 
             angle = np.degrees(angle) # Convert radian to degree
 
+            # 데이터를 concatenate해서 조인트와 앵클만듦
             d = np.concatenate([joint.flatten(), angle])
 
             seq.append(d)
@@ -105,6 +106,8 @@ while cap.isOpened():
                 continue
 
             input_data = np.expand_dims(np.array(seq[-seq_length:], dtype=np.float32), axis=0)
+
+            #판단 로직
 
             #추론 결과
             y_pred = model.predict(input_data).squeeze()
@@ -119,64 +122,66 @@ while cap.isOpened():
                 continue
 
             action = actions[i_pred]
+            # 액션 전부 저장
             action_seq.append(action)
 
             if len(action_seq) < 3:
                 continue
 
-            # 액션 판단 로직 : 마지막 3개의 액션이 모두 같은 액션일 때 ex. 마지막 3개가 전부 come일 때
-            this_action = '?'
+            # 액션 판단 로직 : 마지막 3개의 액션이 모두 같은 액션일 때 ex. 마지막 3개가 전부 come일 때 / 모델의 판단 오류 잡기 위해
+            this_action = '?' # 세번 반복되지 않으면 물음표 출력하도록
             if action_seq[-1] == action_seq[-2] == action_seq[-3]:
                 this_action = action
             
             if last_action != this_action:
-                if this_action == 'skip': 
+                if this_action == 'come': 
                     #my_click("skip_ad.jpg")
                     target = pyautogui.locateOnScreen("img/skip_ad.jpg", grayscale=True, confidence=0.9)
                     if target:
                         pyautogui.click(target)
                         print("skip ad")
                     
-                elif this_action == 'scroll':   
+                elif this_action == 'away':   
                     pyautogui.scroll(-400) 
 
-                elif this_action == 'back':
+                elif this_action == 'spin':
                     pyautogui.hotkey('alt', 'left')
                 
-                elif this_action == 'search':
-                    target=pyautogui.locateOnScreen("img/microphone.jpg", grayscale=True, confidence=0.8)                
-                    if target :
-                        print("microphone.jpg")
-                        pyautogui.click(target, duration=0.5)
-                        pyautogui.moveTo(target, duration=0.5)
-                        pyautogui.sleep(1)
-                elif this_action == 'home':
-                    target=pyautogui.locateOnScreen('img/youtubeMark.jpg', confidence=0.7)    
-                    if target :
-                        print("youtubeMark.jpg")
-                        pyautogui.click(target, duration=0.5)
-                        pyautogui.moveTo(target, duration=0.5)
+                
+                    # target=pyautogui.locateOnScreen("img/microphone.jpg", grayscale=True, confidence=0.8)                
+                    # if target :
+                    #     print("microphone.jpg")
+                    #     pyautogui.click(target, duration=0.5)
+                    #     pyautogui.moveTo(target, duration=0.5)
+                    #     pyautogui.sleep(1)
+                        
 
-                elif this_action == 'space':
-                    pyautogui.hotkey('k')
+                    # target=pyautogui.locateOnScreen('img/youtubeMark.jpg', confidence=0.7)    
+                    # if target :
+                    #     print("youtubeMark.jpg")
+                    #     pyautogui.click(target, duration=0.5)
+                    #     pyautogui.moveTo(target, duration=0.5)
 
-                elif this_action == 'up':
-                    pyautogui.moveTo(700,300, duration=0.25)
-                    target = pyautogui.locateOnScreen("img/volume.jpg")
-                    pyautogui.moveTo(target, duration=0.5)
-                    pyautogui.hotkey('up')
+
+                    # pyautogui.hotkey('k')
+
+
+                    # pyautogui.moveTo(700,300, duration=0.25)
+                    # target = pyautogui.locateOnScreen("img/volume.jpg")
+                    # pyautogui.moveTo(target, duration=0.5)
+                    # pyautogui.hotkey('up')
                     
-                elif this_action == 'down':
-                    pyautogui.moveTo(700,300, duration=0.25)
-                    target = pyautogui.locateOnScreen("img/volume.jpg")
-                    pyautogui.moveTo(target, duration=0.5)
-                    pyautogui.hotkey('down')
+                    
+                    # pyautogui.moveTo(700,300, duration=0.25)
+                    # target = pyautogui.locateOnScreen("img/volume.jpg")
+                    # pyautogui.moveTo(target, duration=0.5)
+                    # pyautogui.hotkey('down')
 
-                elif this_action == 'next':
-                    pyautogui.hotkey('shift', 'n')
 
-                elif this_action == 'max':
-                    pyautogui.hotkey('f')
+                    # pyautogui.hotkey('shift', 'n')
+
+
+                    # pyautogui.hotkey('f')
                     
                 last_action = this_action
 
