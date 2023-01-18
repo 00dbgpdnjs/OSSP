@@ -90,57 +90,57 @@ while cap.isOpened():
             if action_seq[-1] == action_seq[-2] == action_seq[-3]:
                 this_action = action
 
-            if last_action != this_action:
-                if idx == 0:
-                    #my_click("skip_ad.jpg")
-                    target = pyautogui.locateOnScreen("img/skip_ad.jpg", grayscale=True, confidence=0.9)
-                    if target:
-                        pyautogui.click(target)
-                        print("skip ad")
+            # if last_action != this_action:
+            #     if idx == 0:
+            #         #my_click("skip_ad.jpg")
+            #         target = pyautogui.locateOnScreen("img/skip_ad.jpg", grayscale=True, confidence=0.9)
+            #         if target:
+            #             pyautogui.click(target)
+            #             print("skip ad")
 
-                elif idx == 1:
-                    pyautogui.scroll(-400) 
+            #     elif idx == 1:
+            #         pyautogui.scroll(-400) 
                     
-                elif idx == 10:
-                        pyautogui.hotkey('alt', 'left')
+            #     elif idx == 10:
+            #             pyautogui.hotkey('alt', 'left')
                     
-                elif idx == 3:
-                    target=pyautogui.locateOnScreen("img/microphone.jpg", grayscale=True, confidence=0.8)                
-                    if target :
-                        print("microphone.jpg")
-                        pyautogui.click(target, duration=0.5)
-                        pyautogui.moveTo(target, duration=0.5)
-                        pyautogui.sleep(1)
+            #     elif idx == 3:
+            #         target=pyautogui.locateOnScreen("img/microphone.jpg", grayscale=True, confidence=0.8)                
+            #         if target :
+            #             print("microphone.jpg")
+            #             pyautogui.click(target, duration=0.5)
+            #             pyautogui.moveTo(target, duration=0.5)
+            #             pyautogui.sleep(1)
                     
-                elif idx == 4:
-                    target=pyautogui.locateOnScreen('img/youtubeMark.jpg', confidence=0.7)    
-                    if target :
-                        print("youtubeMark.jpg")
-                        pyautogui.click(target, duration=0.5)
-                        pyautogui.moveTo(target, duration=0.5)
+            #     elif idx == 4:
+            #         target=pyautogui.locateOnScreen('img/youtubeMark.jpg', confidence=0.7)    
+            #         if target :
+            #             print("youtubeMark.jpg")
+            #             pyautogui.click(target, duration=0.5)
+            #             pyautogui.moveTo(target, duration=0.5)
                     
-                elif idx == 5:
-                    pyautogui.hotkey('k')
+            #     elif idx == 5:
+            #         pyautogui.hotkey('k')
                     
-                elif idx == 6:
-                    pyautogui.moveTo(700,300, duration=0.25)
-                    target = pyautogui.locateOnScreen("img/volume.jpg")
-                    pyautogui.moveTo(target, duration=0.5)
-                    pyautogui.hotkey('up')
+            #     elif idx == 6:
+            #         pyautogui.moveTo(700,300, duration=0.25)
+            #         target = pyautogui.locateOnScreen("img/volume.jpg")
+            #         pyautogui.moveTo(target, duration=0.5)
+            #         pyautogui.hotkey('up')
                     
-                elif idx == 7:
-                    pyautogui.moveTo(700,300, duration=0.25)
-                    target = pyautogui.locateOnScreen("img/volume.jpg")
-                    pyautogui.moveTo(target, duration=0.5)
-                    pyautogui.hotkey('down')
+            #     elif idx == 7:
+            #         pyautogui.moveTo(700,300, duration=0.25)
+            #         target = pyautogui.locateOnScreen("img/volume.jpg")
+            #         pyautogui.moveTo(target, duration=0.5)
+            #         pyautogui.hotkey('down')
                     
-                elif idx == 8:
-                    pyautogui.hotkey('shift', 'n')
+            #     elif idx == 8:
+            #         pyautogui.hotkey('shift', 'n')
                     
-                elif idx == 9:
-                    pyautogui.hotkey('f')
-                # pyautogui.sleep(2)
-                last_action = this_action
+            #     elif idx == 9:
+            #         pyautogui.hotkey('f')
+            #     # pyautogui.sleep(2)
+            #     last_action = this_action
                     
 
                 # if rps_result[0]['rps']=='rock':
