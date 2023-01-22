@@ -142,10 +142,11 @@ while cap.isOpened():
                         print("skip ad")
                     
                 elif this_action == 'away':   
-                    pyautogui.scroll(-400) 
+                    pyautogui.scroll(-700) 
 
                 elif this_action == 'spin':
-                    pyautogui.hotkey('alt', 'left')
+                    # pyautogui.hotkey('alt', 'left')
+                    pyautogui.hotkey('shift', 'n')
                 
                 
                     # target=pyautogui.locateOnScreen("img/microphone.jpg", grayscale=True, confidence=0.8)                
@@ -178,7 +179,7 @@ while cap.isOpened():
                     # pyautogui.hotkey('down')
 
 
-                    # pyautogui.hotkey('shift', 'n')
+                    
 
 
                     # pyautogui.hotkey('f')
