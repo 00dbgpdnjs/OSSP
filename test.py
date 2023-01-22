@@ -41,6 +41,7 @@ seq_length = 30
 model = load_model('models/model2_1.0.h5')
 
 # MediaPipe hands model
+# 손 인식
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 hands = mp_hands.Hands(
@@ -48,6 +49,7 @@ hands = mp_hands.Hands(
     min_detection_confidence=0.5,
     min_tracking_confidence=0.5)
 
+# 웹캠의 이미지 읽어오기
 cap = cv2.VideoCapture(0)
 
 # w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -61,7 +63,7 @@ action_seq = []
 last_action = None
 
 while cap.isOpened():
-    ret, img = cap.read()
+    ret, img = cap.read() # 한 프레임씩 읽어오기
     img0 = img.copy()
 
     img = cv2.flip(img, 1)
@@ -75,23 +77,25 @@ while cap.isOpened():
         pyautogui.click(target)
         pyautogui.moveTo(target)
 
-    if result.multi_hand_landmarks is not None:
-        for res in result.multi_hand_landmarks:
-            joint = np.zeros((21, 4))
+    if result.multi_hand_landmarks is not None: # 손이 인식되면
+        for res in result.multi_hand_landmarks: # 여러개의 손이 있을 수 있어서
+            joint = np.zeros((21, 4)) # 21개의 조인트, 좌표 4가지(x,y,z,visibility)
             for j, lm in enumerate(res.landmark):
-                joint[j] = [lm.x, lm.y, lm.z, lm.visibility]
+                joint[j] = [lm.x, lm.y, lm.z, lm.visibility]# joint의 좌표 저장
+
+            # 각도를 계산하여 제스처 인식
 
             # Compute angles between joints
             v1 = joint[[0,1,2,3,0,5,6,7,0,9,10,11,0,13,14,15,0,17,18,19], :3] # Parent joint
             v2 = joint[[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], :3] # Child joint
-            v = v2 - v1 # [20, 3]
+            v = v2 - v1 # [20, 3] / 각 관절의 벡터 구하기
             # Normalize v
             v = v / np.linalg.norm(v, axis=1)[:, np.newaxis]
 
             # Get angle using arcos of dot product
             angle = np.arccos(np.einsum('nt,nt->n',
                 v[[0,1,2,4,5,6,8,9,10,12,13,14,16,17,18],:], 
-                v[[1,2,3,5,6,7,9,10,11,13,14,15,17,18,19],:])) # [15,]
+                v[[1,2,3,5,6,7,9,10,11,13,14,15,17,18,19],:])) # [15,] / 15개의 각도 구함
 
             angle = np.degrees(angle) # Convert radian to degree
 
@@ -100,6 +104,7 @@ while cap.isOpened():
 
             seq.append(d)
 
+            # 손가락 마디마디에 랜드마크를 그림
             mp_drawing.draw_landmarks(img, res, mp_hands.HAND_CONNECTIONS)
 
             if len(seq) < seq_length:
@@ -145,44 +150,7 @@ while cap.isOpened():
                     pyautogui.scroll(-700) 
 
                 elif this_action == 'spin':
-                    # pyautogui.hotkey('alt', 'left')
                     pyautogui.hotkey('shift', 'n')
-                
-                
-                    # target=pyautogui.locateOnScreen("img/microphone.jpg", grayscale=True, confidence=0.8)                
-                    # if target :
-                    #     print("microphone.jpg")
-                    #     pyautogui.click(target, duration=0.5)
-                    #     pyautogui.moveTo(target, duration=0.5)
-                    #     pyautogui.sleep(1)
-                        
-
-                    # target=pyautogui.locateOnScreen('img/youtubeMark.jpg', confidence=0.7)    
-                    # if target :
-                    #     print("youtubeMark.jpg")
-                    #     pyautogui.click(target, duration=0.5)
-                    #     pyautogui.moveTo(target, duration=0.5)
-
-
-                    # pyautogui.hotkey('k')
-
-
-                    # pyautogui.moveTo(700,300, duration=0.25)
-                    # target = pyautogui.locateOnScreen("img/volume.jpg")
-                    # pyautogui.moveTo(target, duration=0.5)
-                    # pyautogui.hotkey('up')
-                    
-                    
-                    # pyautogui.moveTo(700,300, duration=0.25)
-                    # target = pyautogui.locateOnScreen("img/volume.jpg")
-                    # pyautogui.moveTo(target, duration=0.5)
-                    # pyautogui.hotkey('down')
-
-
-                    
-
-
-                    # pyautogui.hotkey('f')
                     
                 last_action = this_action
 
